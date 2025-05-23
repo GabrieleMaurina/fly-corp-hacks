@@ -1,6 +1,7 @@
 import os.path
 import PIL.Image
 import pyautogui
+import screeninfo
 
 
 DIR = os.path.dirname(os.path.abspath(__file__))
@@ -13,6 +14,11 @@ check_img = PIL.Image.open(CHECK_IMG)
 x_img = PIL.Image.open(X_IMG)
 fast_img = PIL.Image.open(FAST_IMG)
 images = x_img, check_img, fast_img
+
+
+X_CENTER = screeninfo.get_monitors()[0].width // 2
+Y_CENTER = screeninfo.get_monitors()[0].height // 2
+
 
 def find_images():
     screen = pyautogui.screenshot()
@@ -27,11 +33,13 @@ def find_images():
             return x, y
     return None
 
+
 def main():
     while True:
         location = find_images()
         if location is not None:
             pyautogui.click(*location)
+            pyautogui.moveTo(X_CENTER, Y_CENTER)
 
 
 if __name__ == "__main__":
