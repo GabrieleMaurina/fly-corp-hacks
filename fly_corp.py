@@ -24,7 +24,8 @@ def find_images():
     screen = pyautogui.screenshot()
     for image in images:
         try:
-            location = pyautogui.locate(image, screen)
+            location = pyautogui.locate(
+                image, screen, grayscale=True, confidence=0.8)
         except pyautogui.ImageNotFoundException:
             pass
         else:
@@ -36,10 +37,13 @@ def find_images():
 
 def main():
     while True:
-        location = find_images()
-        if location is not None:
-            pyautogui.click(*location)
-            pyautogui.moveTo(X_CENTER, Y_CENTER)
+        try:
+            location = find_images()
+            if location is not None:
+                pyautogui.click(*location)
+                pyautogui.moveTo(X_CENTER, Y_CENTER)
+        except KeyboardInterrupt:
+            break
 
 
 if __name__ == "__main__":
